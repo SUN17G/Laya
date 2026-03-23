@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Laya</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- LOGIN PAGE -->
+<div id="loginScreen" class="login-screen">
+
+  <h1>Laya</h1>
+
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="signup()">Create Account</button>
+  <button onclick="emailLogin()">Login</button>
+
+  <p>OR</p>
+
+  <button class="google" onclick="googleLogin()">Login with Google</button>
+
+</div>
+
+<!-- MAIN -->
+ <div id="mainApp" style="display:none">
+
+<!-- TOP NAVBAR -->
+<div class="topbar">
+
+  <div class="left-nav">
+    <div class="spotify-icon">🎵</div>
+    <button class="home-btn" onclick="goHome()">🏠</button>
+  </div>
+
+  <div class="search-box">
+    🔍
+  <input id="searchInput" class="search" placeholder="What do you want to play?">
+    <div id="suggestions" class="suggestions"></div>
+
+    <div class="folder">📁</div>
+  </div>
+
+  <div class="right-nav">
+    <div class="icon">🔔</div>
+    <div class="icon">👥</div>
+
+    <div class="profile" onclick="toggleProfileMenu()">
+      
+  <!-- PROFILE -->
+  <div class="profile-area">
+    <div class="avatar" onclick="toggleProfileMenu()">H</div>
+
+    <div id="profileMenu" class="profile-menu">
+<div class="menu-item" onclick="openAccount()">Account</div>
+<div class="menu-item" onclick="openProfile()">Profile</div>
+<div id="profilePage" class="profile-page" style="display:none">
+
+  <button onclick="goHome()">⬅ Back</button>
+
+  <h1>Your Profile</h1>
+
+  <img id="profilePic" class="profile-pic">
+
+  <input id="profileName" placeholder="Your name">
+
+  <input type="file" id="profileImage">
+
+  <button onclick="saveProfile()">Save</button>
+
+</div>
+
+<div class="menu-item" onclick="openSettings()">Settings</div>
+<div class="menu-item" onclick="openDownloads()">Download</div>
+<hr>
+<div class="menu-item logout" onclick="logout()">Log out</div>
+    </div>
+  </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="suggestions" class="suggestions"></div>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <h3>Your Library</h3>
+      <br><br>
+      <button onclick="openLiked()">❤️ Liked Songs</button>
+      <br><br>
+
+      <input id="playlistName" placeholder="New playlist">
+      <button onclick="createPlaylist()">Create</button>
+
+      <div id="playlists"></div>
+    </div>
+
+      <!-- HOME VIEW -->
+      <div id="homeView">
+        <!-- SEARCH RESULTS PAGE -->
+  <div id="searchView" style="display:none;">
+    <h2>Search Results</h2>
+
+    <h3>Songs</h3>
+    <div id="searchSongs" class="grid"></div>
+
+    <h3>Playlists</h3>
+    <div id="searchPlaylists"></div>
+  </div>
+        <h2>Trending songs</h2>
+        <div id="songs" class="grid"></div>
+        <div id="horizontalSongs" class="horizontal-row"></div>
+      </div>
+
+      <!-- PLAYLIST / LIKED VIEW -->
+      <div id="playlistView" style="display:none;">
+
+        <!-- HEADER -->
+        <div class="playlist-header">
+          <img id="playlistCover" src="" />
+          <div>
+            <h1 id="playlistTitle"></h1>
+            <button class="bigPlay" onclick="playPlaylist()">▶</button>
+          </div>
+        </div>
+
+        <!-- TABLE HEADER -->
+        <div class="playlist-table-header">
+          <div>#</div>
+          <div>Title</div>
+          <div>Album</div>
+          <div>Time</div>
+          <div></div>
+        </div>
+
+        <!-- SONG LIST -->
+        <div id="playlistSongs"></div>
+
+      </div>
+
+    </div>
+  
+
+  <!-- PLAYER -->
+<div class="player">
+
+  <!-- LEFT: song info -->
+  <div class="player-left">
+    <img id="cover" src="">
+    <div>
+      <div id="title">Nothing playing</div>
+      <div id="artist" class="small"></div>
+    </div>
+  </div>
+
+  <!-- CENTER: controls -->
+  <div class="player-center">
+
+    <div class="controls-top">
+      <button id="shuffleBtn" onclick="toggleShuffle()">🔀</button>
+      <button onclick="prev()">⏮</button>
+
+      <button onclick="toggle()" id="playBtn" class="play-main">▶</button>
+
+      <button onclick="next()">⏭</button>
+      <button id="repeatBtn" onclick="toggleRepeat()">🔁</button>
+      <button onclick="toggleQueue()">📃</button>
+      <button onclick="toggleFullPlayer()">⛶</button>
+    </div>
+
+    <div class="timeline">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progress" value="0">
+      <span id="duration">0:00</span>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: volume -->
+ <div class="player-right">
+  <button id="muteBtn" onclick="toggleMute()">🔊</button>
+  <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+</div>
+
+  
+  
+</div>
+
+
+  <audio id="audio"></audio>
+</div>
+
+
+  <!-- RIGHT CLICK MENU -->
+  <div id="menu" class="menu" style="display:none;">
+    <div onclick="addSongToPlaylist()">Add to playlist</div>
+    <div onclick="removeSong()">Remove from playlist</div>
+  </div>
+
+  <div id="queuePanel" class="queue-panel">
+    <h3>Queue</h3>
+    <button onclick="clearQueue()">Clear</button>
+    <button onclick="saveQueueToPlaylist()">Save Queue</button>
+    <div id="queueList"></div>
+ </div>
+
+<!-- RIGHT SIDE FEATURE PANEL -->
+<div id="featurePanel" class="feature-panel">
+  <div class="feature-header">
+    <h2 id="featureTitle">Panel</h2>
+    <button onclick="closeFeature()">✖</button>
+  </div>
+
+  <div id="featureContent" class="feature-content">
+    Content here
+  </div>
+</div>
+
+</div>
+<div id="fullPlayer" class="full-player">
+
+  <div class="full-bg" id="fullBg"></div>
+
+  <div class="full-content">
+
+    <img id="fullCover" class="full-cover">
+
+    <h2 id="fullTitle"></h2>
+    <p id="fullArtist"></p>
+
+    <div class="full-controls">
+      <button onclick="toggleShuffle()">🔀</button>
+      <button onclick="prev()">⏮</button>
+      <button onclick="toggle()">▶</button>
+      <button onclick="next()">⏭</button>
+      <button onclick="toggleRepeat()">🔁</button>
+    </div>
+
+    <!-- TIMELINE -->
+  <div class="fs-timeline">
+    <span id="fsCurrent">0:00</span>
+    <input type="range" id="fsProgress" value="0">
+    <span id="fsDuration">0:00</span>
+  </div>
+
+   <div class="fs-volume">
+    🔊
+    <input type="range" id="fsVolume" min="0" max="1" step="0.01" value="1">
+  </div>
+    <button class="close-full" onclick="toggleFullPlayer()">✕</button>
+
+  </div>
+</div>
+
+</div>
+<script type="module" src="firebaseClient.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
